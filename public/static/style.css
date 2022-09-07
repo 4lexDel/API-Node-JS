@@ -1,0 +1,66 @@
+:root {
+    --redCardbgColor: rgb(234, 103, 103);
+    --greenCardbgColor: rgb(69, 148, 69);
+    --blueCardbgColor: rgb(104, 104, 202);
+    --orangeCardbgColor: black;
+    --ftColor: rgb(232, 232, 232);
+}
+
+body {
+    background-color: #ffbf97;
+    margin: auto;
+    width: 100%;
+}
+
+h1 {
+    background-color: aliceblue;
+    text-align: center;
+    font-size: 40px;
+}
+
+.path {
+    font-weight: bold;
+    border: var(--ftColor) solid 2px;
+    padding: 2px 5px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--ftColor);
+}
+
+.card {
+    margin: auto;
+    background-color: wheat;
+    box-sizing: border-box;
+    box-shadow: wheat 4px 4px 20px;
+    padding: 20px 15px;
+    width: 60%;
+    color: var(--ftColor);
+    font-size: 19px;
+}
+
+.card:hover {
+    width: 61%;
+    font-size: 20px;
+}
+
+.red-card {
+    box-shadow: var(--redCardbgColor) 4px 4px 20px;
+    background-color: var(--redCardbgColor);
+}
+
+.green-card {
+    box-shadow: var(--greenCardbgColor) 4px 4px 20px;
+    background-color: var(--greenCardbgColor);
+}
+
+.blue-card {
+    box-shadow: var(--blueCardbgColor) 4px 4px 20px;
+    background-color: var(--blueCardbgColor);
+}
+
+.orange-card {
+    box-shadow: var(--orangeCardbgColor) 4px 4px 20px;
+    background-color: var(--orangeCardbgColor);
+}

@@ -1,0 +1,25 @@
+{
+    "name": "api-node-js",
+    "version": "1.0.0",
+    "description": "My first Node JS API",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/4lexDel/API-Node-JS.git"
+    },
+    "author": "4lexDel",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/4lexDel/API-Node-JS/issues"
+    },
+    "homepage": "https://github.com/4lexDel/API-Node-JS#readme",
+    "dependencies": {
+        "express": "^4.18.1",
+        "nodemon": "^2.0.19",
+        "path": "^0.12.7"
+    }
+}
