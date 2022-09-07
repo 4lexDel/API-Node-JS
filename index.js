@@ -47,7 +47,7 @@ function getTaskById(id) {
 
             let tasks = JSON.parse(data);
 
-            let task = tasks.filter((val) => val.id == id);
+            let task = tasks.find((val) => val.id == id);
 
             resolve(task);
         });
