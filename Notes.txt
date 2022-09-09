@@ -1,0 +1,5 @@
+DRY :
+- auth at the begining of app.get, app.post...etc
+
+
+Cannot read properties of undefined (reading 'userId') !!!!!!!!!! ==> MODIFIER LE CONTROLLER

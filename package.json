@@ -18,7 +18,10 @@
     },
     "homepage": "https://github.com/4lexDel/API-Node-JS#readme",
     "dependencies": {
+        "bcrypt": "^5.0.1",
+        "cors": "^2.8.5",
         "express": "^4.18.1",
+        "jsonwebtoken": "^8.5.1",
         "nodemon": "^2.0.19",
         "path": "^0.12.7"
     }

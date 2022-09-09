@@ -36,6 +36,7 @@ a {
     box-shadow: wheat 4px 4px 20px;
     padding: 20px 15px;
     width: 60%;
+    min-width: 360px;
     color: var(--ftColor);
     font-size: 19px;
 }

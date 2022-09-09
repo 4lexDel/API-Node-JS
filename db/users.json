@@ -1,0 +1,13 @@
+[{
+        "id": 1,
+        "username": "4lexDel",
+        "password": "$2b$05$ONLZB78D5tyoB.YOSyZAluJ6Av3QndwO7pQz473UCxghbhm5aW4lC",
+        "isAdmin": 0
+    },
+    {
+        "id": 2,
+        "username": "luludu82",
+        "password": "$2b$05$kjaNcC4DN8xJGJsOayQPL.JtYhv1OxPL1JGQXFdT2XMrA/JrJXjZO",
+        "isAdmin": 0
+    }
+]
