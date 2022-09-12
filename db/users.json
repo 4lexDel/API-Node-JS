@@ -9,5 +9,17 @@
         "username": "luludu82",
         "password": "$2b$05$kjaNcC4DN8xJGJsOayQPL.JtYhv1OxPL1JGQXFdT2XMrA/JrJXjZO",
         "isAdmin": 0
+    },
+    {
+        "id": 3,
+        "username": "lucille",
+        "password": "$2b$05$4DwfOx/DpOZ/5tLMVxKFguHAC9/QXHju0DgZlGvrazrex0kCpnnIe",
+        "isAdmin": 0
+    },
+    {
+        "id": 4,
+        "username": "alexandre",
+        "password": "$2b$05$Q33.xPn87GsevAW3X8702./npNhhh1DVreyHq0g57HIUYsiuf.onO",
+        "isAdmin": 0
     }
 ]

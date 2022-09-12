@@ -2,14 +2,13 @@ const express = require('express');
 const app = express();
 
 var path = require('path');
-const { getTasks, getTaskById, addTask, updateTask, deleteTask } = require('./controllers/tasksController');
 const { login, register, getUserProfile } = require('./usersAuth');
 
 var cors = require('cors');
 const jwtUtils = require('./utils/jwt.utils');
+const { getTaskLists, getTaskListById, addTaskList, addTaskInTaskList, updateTaskList, updateTaskInTaskList, getTaskInTaskList, deleteTaskList, deleteTaskInTaskList } = require('./controllers/task-listsController');
 
 const PORT = 5500;
-
 
 app.listen(
     PORT,
@@ -25,143 +24,21 @@ app.use("/static", express.static(path.join(__dirname, 'public/static')));
 
 app.use(cors());
 
-app.use(function(req, res, next) { //Midleware
-    console.log('Time:', Date.now());
-    next();
-});
 
+function authMid(req, res, next) { //This midleware check the token and share the userId return
+    var headerAuth = req.headers['authorization']; //Get the token
+    var userId = jwtUtils.getUserId(headerAuth); //Check if it exist and get the userId
+
+    if (userId < 0) return res.status(400).json({ 'error': 'wrong token' });
+
+    req.auth = { userId };
+
+    next();
+}
 
 
 app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/`);
-})
-
-app.get("/api/tasks", async(req, res) => {
-    console.log("GET /tasks");
-    /**-------------------------------------------------------------------------------------AUTH------ */
-    var headerAuth = req.headers['authorization']; //Get the token
-    var userId = jwtUtils.getUserId(headerAuth); //Check if it exist and get the userId
-
-    if (userId < 0) return res.status(400).json({ 'error': 'wrong token' });
-    /**----------------------------------------------------------------------------------------------- */
-
-    let tasks = await getTasks();
-
-    tasks = tasks.filter((task) => task.userId == userId); //ON VERIFIE LE PROPRIETAIRE !!!
-
-    console.log(tasks);
-
-    res.status(200).send(tasks);
-    console.log("OK");
-})
-
-app.get("/api/tasks/:id", async(req, res) => {
-    console.log("GET /tasks/:id");
-
-    /**-------------------------------------------------------------------------------------AUTH------ */
-    var headerAuth = req.headers['authorization']; //Get the token
-    var userId = jwtUtils.getUserId(headerAuth); //Check if it exist and get the userId
-
-    if (userId < 0) return res.status(400).json({ 'error': 'wrong token' });
-    /**----------------------------------------------------------------------------------------------- */
-
-    const { id } = req.params;
-
-    let task = await getTaskById(id);
-
-    if (task.userId != userId) return res.status(200).send({});
-
-    console.log(task);
-
-    res.status(200).send(task);
-    console.log("OK");
-})
-
-app.post('/api/task', async(req, res) => {
-    console.log("POST /task");
-
-    /**-------------------------------------------------------------------------------------AUTH------ */
-    var headerAuth = req.headers['authorization']; //Get the token
-    var userId = jwtUtils.getUserId(headerAuth); //Check if it exist and get the userId
-
-    if (userId < 0) return res.status(400).json({ 'error': 'wrong token' });
-    /**----------------------------------------------------------------------------------------------- */
-
-    const { name } = req.body;
-    const { priority } = req.body;
-
-    if (!name || !priority) {
-        res.status(418).send({ message: 'We need all the parameters !' });
-    }
-
-    let newTask = {
-        id: -1,
-        userId: userId,
-        name: name,
-        priority: priority
-    }
-
-    let taskToSend = await addTask(newTask);
-    console.log(taskToSend);
-
-    res.status(201).send(taskToSend);
-})
-
-app.put("/api/tasks/:id", async(req, res) => {
-    console.log("PUT /tasks/:id");
-
-    /**-------------------------------------------------------------------------------------AUTH------ */
-    var headerAuth = req.headers['authorization']; //Get the token
-    var userId = jwtUtils.getUserId(headerAuth); //Check if it exist and get the userId
-
-    if (userId < 0) return res.status(400).json({ 'error': 'wrong token' });
-
-    /**----------------------------------------------------------------------------------------------- */
-
-    const { id } = req.params;
-    const { name } = req.body;
-    const { priority } = req.body;
-
-    let taskToUpdate = await getTaskById(id);
-
-    if (taskToUpdate.userId != userId) return res.status(200).send({});
-
-    let newTask = {
-        id: parseInt(id),
-        userId: userId,
-        name: name,
-        priority: priority
-    }
-
-    const task = await updateTask(id, newTask);
-    console.log(task);
-
-    res.status(200).send(task);
-    console.log("OK");
-})
-
-app.delete("/api/tasks/:id", async(req, res) => {
-    console.log("DELETE /tasks/:id");
-
-    /**-------------------------------------------------------------------------------------AUTH------ */
-    var headerAuth = req.headers['authorization']; //Get the token
-    var userId = jwtUtils.getUserId(headerAuth); //Check if it exist and get the userId
-
-    if (userId < 0) return res.status(400).json({ 'error': 'wrong token' });
-
-    /**----------------------------------------------------------------------------------------------- */
-
-    const { id } = req.params;
-
-    let taskToDelete = await getTaskById(id);
-
-    if (taskToDelete.userId != userId) return res.status(200).send({});
-
-    const task = await deleteTask(id);
-    console.log(task);
-
-    res.status(200).send(task);
-    console.log("OK");
 })
 
 /** -------------------------------Authentification------------------------------------------ */
@@ -170,14 +47,12 @@ app.post("/api/register", async(req, res) => {
     console.log("POST /api/register");
 
     register(req, res);
-    //res.status(201).send("Register process...");
 })
 
 app.post("/api/login", async(req, res) => {
     console.log("POST /api/login");
 
     login(req, res);
-    //res.status(201).send("Login process...");
 })
 
 app.get("/api/test", async(req, res) => {
@@ -185,3 +60,244 @@ app.get("/api/test", async(req, res) => {
 
     getUserProfile(req, res);
 })
+
+/**------------------------------------------------------------------------------------------- */
+
+app.get("/api/task-lists", authMid, async(req, res) => { //[CHECK, ]
+    console.log("GET /task-lists");
+    console.log([] != null);
+
+    let userId = req.auth.userId;
+
+    let taskLists = await getTaskLists();
+
+    if (taskLists != null) {
+        taskLists = taskLists.filter((taskList) => taskList.userId == userId);
+    }
+
+    return res.status(200).send(taskLists);
+})
+
+app.get("/api/task-lists/:id", authMid, async(req, res) => { //[CHECK, ]
+    console.log("GET /task-lists/:id");
+
+    let userId = req.auth.userId;
+
+    const { id } = req.params;
+
+    let taskList = await getTaskListById(id);
+
+    if (!taskList || taskList.userId != userId) return res.status(200).send({});
+
+    return res.status(200).send(taskList);
+})
+
+app.get("/api/task-lists/:idTaskList/:idTask", authMid, async(req, res) => { //[CHECK, ]
+    console.log("GET /task-lists/:idTaskList/:idTask");
+
+    let userId = req.auth.userId;
+
+    const { idTaskList } = req.params;
+    const { idTask } = req.params;
+
+    let taskList = await getTaskListById(idTaskList);
+
+    if (!taskList || taskList.userId != userId) return res.status(200).send({});
+
+    let taskToSend = await getTaskInTaskList(idTaskList, idTask);
+
+    return res.status(200).send(taskToSend);
+})
+
+app.post('/api/task-list', authMid, async(req, res) => { //[CHECK, ]
+    console.log("POST /task-list");
+
+    let userId = req.auth.userId;
+
+    const { title } = req.body;
+    const { tasks } = req.body;
+
+    if (title == null || tasks == null) {
+        return res.status(418).send({ message: 'We need all the parameters !' });
+    }
+
+    let newTaskList = {
+        id: -1,
+        userId: userId,
+        title: title,
+        tasks: tasks
+    }
+
+    let taskListToSend = await addTaskList(newTaskList);
+
+    return res.status(201).send(taskListToSend);
+})
+
+app.post('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
+    console.log("POST /task-lists/:id");
+
+    let userId = req.auth.userId;
+
+    const { id } = req.params;
+
+    const { title } = req.body;
+    const { description } = req.body;
+    const { priority } = req.body;
+    const { startDate } = req.body;
+    const { endDate } = req.body;
+    const { advancement } = req.body;
+
+    if (title == null || description == null || priority == null || startDate == null || endDate == null || advancement == null) {
+        return res.status(418).send({ message: 'We need all the parameters !' });
+    }
+
+    let taskList = await getTaskListById(id);
+
+    if (!taskList || taskList.userId != userId) return res.status(200).send({});
+
+    let newTask = {
+        id: -1,
+        title: title,
+        description: description,
+        priority: priority,
+        startDate: startDate,
+        endDate: endDate,
+        advancement: advancement
+    }
+
+    let taskToSend = await addTaskInTaskList(newTask, id);
+
+    return res.status(201).send(taskToSend);
+})
+
+app.put('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
+    console.log("PUT /task-lists/:id");
+
+    let userId = req.auth.userId;
+
+    const { id } = req.params;
+
+    const { title } = req.body;
+    const { tasks } = req.body;
+
+    if (title == null || tasks == null) {
+        return res.status(418).send({ message: 'We need all the parameters !' });
+    }
+
+    let taskListToUpdate = await getTaskListById(id);
+
+    if (taskListToUpdate == null || taskListToUpdate.userId != userId) return res.status(200).send({});
+
+    let updatedTaskList = {
+        id: -1,
+        userId: userId,
+        title: title,
+        tasks: tasks
+    }
+
+    let taskListToSend = await updateTaskList(updatedTaskList, id);
+
+    return res.status(201).send(taskListToSend);
+})
+
+app.put('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[CHECK, ]
+    console.log("PUT /task-lists/:idTaskList/:idTask");
+
+    let userId = req.auth.userId;
+
+    const { idTaskList } = req.params;
+    const { idTask } = req.params;
+
+    const { title } = req.body;
+    const { description } = req.body;
+    const { priority } = req.body;
+    const { startDate } = req.body;
+    const { endDate } = req.body;
+    const { advancement } = req.body;
+
+    if (title == null || description == null || priority == null || startDate == null || endDate == null || advancement == null) {
+        return res.status(418).send({ message: 'We need all the parameters !' });
+    }
+
+    let taskListToUpdate = await getTaskListById(idTaskList);
+
+    if (taskListToUpdate == null || taskListToUpdate.userId != userId) return res.status(200).send({});
+
+    let updatedTask = {
+        id: -1,
+        title: title,
+        description: description,
+        priority: priority,
+        startDate: startDate,
+        endDate: endDate,
+        advancement: advancement
+    }
+
+    let taskToSend = await updateTaskInTaskList(updatedTask, idTaskList, idTask);
+
+    return res.status(201).send(taskToSend);
+})
+
+app.delete('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
+    console.log("DELETE /task-lists/:id");
+
+    let userId = req.auth.userId;
+
+    const { id } = req.params;
+
+    let taskListToDelete = await getTaskListById(id);
+
+    if (taskListToDelete == null || taskListToDelete.userId != userId) return res.status(200).send({});
+
+    let taskListToSend = await deleteTaskList(id);
+
+    return res.status(200).send(taskListToSend);
+})
+
+app.delete('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[CHECK, ]
+    console.log("DELETE /task-lists/:idTaskList/:idTask");
+
+    let userId = req.auth.userId;
+
+    const { idTaskList } = req.params;
+    const { idTask } = req.params;
+
+    let taskListUse = await getTaskListById(idTaskList);
+
+    if (taskListUse == null || taskListUse.userId != userId) return res.status(200).send({});
+
+    let taskToSend = await deleteTaskInTaskList(idTaskList, idTask);
+
+    return res.status(200).send(taskToSend);
+})
+
+
+
+//------------TEST-------------//
+
+//      ==> GET [CHECK, ]
+//      ==> POST [CHECK,]
+//      ==> PUT [CHECK, ]
+//      ==> DELETE [CHECK, ]
+
+//------------Scenario de test------------//
+/**
+ * E1 = (Prendre une valeur innexistante, interdite puis correct)
+ * 
+ * 
+ * Tout afficher 
+ * Afficher 1 task-list précise : E1
+ * Afficher 1 task précise : E1
+ * Ajouter une task-list vide
+ * Ajouter une task : E1 pour la selection de la tasklist
+ * Modifier une task list : E1
+ * Modifier une task : E1
+ * Supprimer une task list : E1
+ * SUpprimer une task : E1
+ */
+
+
+//BUG RESTANTS :
+//  - Pour l'ajout de taskList si il n'y en a aucune alors il n'y aura pas d'ajout
+//  - Le format des données d'entrées n'est pas vérifié...
+//  - Messages d'erreurs à compléter
