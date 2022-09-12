@@ -65,7 +65,7 @@ app.get("/api/test", async(req, res) => {
 
 app.get("/api/task-lists", authMid, async(req, res) => { //[CHECK, ]
     console.log("GET /task-lists");
-    console.log([] != null);
+    //console.log([] != null);
 
     let userId = req.auth.userId;
 
@@ -275,25 +275,25 @@ app.delete('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { 
 
 //------------TEST-------------//
 
-//      ==> GET [CHECK, ]
-//      ==> POST [CHECK,]
-//      ==> PUT [CHECK, ]
-//      ==> DELETE [CHECK, ]
+//      ==> GET [CHECK]
+//      ==> POST [CHECK]
+//      ==> PUT [CHECK]
+//      ==> DELETE [CHECK]
 
 //------------Scenario de test------------//
 /**
  * E1 = (Prendre une valeur innexistante, interdite puis correct)
  * 
  * 
- * Tout afficher 
- * Afficher 1 task-list précise : E1
- * Afficher 1 task précise : E1
- * Ajouter une task-list vide
- * Ajouter une task : E1 pour la selection de la tasklist
- * Modifier une task list : E1
- * Modifier une task : E1
- * Supprimer une task list : E1
- * SUpprimer une task : E1
+ * Tout afficher                                                [CHECK]
+ * Afficher 1 task-list précise : E1                            [CHECK]
+ * Afficher 1 task précise : E1                                 [CHECK]
+ * Ajouter une task-list vide                                   [CHECK]
+ * Ajouter une task : E1 pour la selection de la tasklist       [CHECK]
+ * Modifier une task list : E1                                  [CHECK]
+ * Modifier une task : E1                                       [CHECK]
+ * Supprimer une task list : E1                                 [CHECK]
+ * SUpprimer une task : E1                                      [CHECK]
  */
 
 
