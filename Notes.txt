@@ -2,4 +2,5 @@ DRY :
 - auth at the begining of app.get, app.post...etc
 
 
-Cannot read properties of undefined (reading 'userId') !!!!!!!!!! ==> MODIFIER LE CONTROLLER
+ADMIN : 
+UPDATE ou DELETE compte et acces aux données

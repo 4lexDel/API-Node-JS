@@ -11,27 +11,51 @@
 
 <body>
     <h1>Tasks API</h1>
+    <div class="special-card">
+        <h2>Account</h2>
+        <p><span class="path">POST API/register</span> : Create your account</p>
+        <p><span class="path">POST API/login</span> : Login to your account to get your JWT Token</p>
+        <p><span class="data">{</br>'username': 'USERNAME', </br>'password': 'PASSWORD'</br>}</span></p>
+        <hr>
+        <p><span class="path">POST API/test</span> : Test your token</p>
+        <p><span class="data">{</br>'Authorization': 'Bearer xxxxxxxxx.xxxxxxxxxx.xxxxxxx'</br>}</span></p>
+    </div>
     <br>
     <div class="card red-card">
-        <a href="/tasks">
-            <p><span class="path">GET /api/tasks</span> : To get all the tasks</p>
-        </a>
-        <a href="/tasks/1">
-            <p><span class="path">GET /api/tasks/:id</span> : To get a task by id</p>
-        </a>
+        <h2>GET</h2>
+        <p><span class="path">GET API/task-lists</span> : To get all the task lists</p>
+        <p><span class="path">GET API/task-lists/:id</span> : To get a specific task list</p>
+        <p><span class="path">GET API/task-lists/:idTaskList/:idTask</span> : To get a task in a specific task list</p>
     </div>
     <br>
     <div class="card green-card">
-        <p><span class="path">POST /api/task</span> : Add a new task</p>
+        <h2>POST</h2>
+        <p><span class="path">POST API/task-list</span> : Add a new task list</p>
+        <p><span class="data">{</br>'title': 'NEW TASK LIST', </br>'tasks': '[]'</br>}</span></p>
+        <hr>
+        <p><span class="path">POST API/task-lists/:id</span> : Add a new task in a specific task list</p>
+        <p><span class="data">{</br>'title': 'NEW TASK', </br>'description': 'DESCRIPTION', 
+        </br>'priority': 'PRIORITY', </br>'startDate': 'STARTDATE', 
+    </br>'endDate': 'ENDDATE', </br>'advancement': 'ADVANCEMENT'</br>}</span></p>
     </div>
     <br>
     <div class="card blue-card">
-        <p><span class="path">PUT /api/task/:id</span> : Update a task by id</p>
+        <h2>PUT</h2>
+        <p><span class="path">PUT API/task-lists/:id</span> : Update a specific task list</p>
+        <p><span class="data">{</br>'title': 'UPDATED TASK LIST', </br>'tasks': '[]'</br>}</span></p>
+        <hr>
+        <p><span class="path">PUT API/task-lists/:idTaskList/:idTask</span> : Update a task in a specific task list</p>
+        <p><span class="data">{</br>'title': 'UPDATED TASK', </br>'description': 'DESCRIPTION', 
+        </br>'priority': 'PRIORITY', </br>'startDate': 'STARTDATE', 
+    </br>'endDate': 'ENDDATE', </br>'advancement': 'ADVANCEMENT'</br>}</span></p>
     </div>
     <br>
-    <div class="card orange-card">
-        <p><span class="path">DELETE /api/tasks/:id</span> : Delete a task</p>
+    <div class="card black-card">
+        <h2>DELETE</h2>
+        <p><span class="path">DELETE API/task-lists/:id</span> : Delete a specific task list</p>
+        <p><span class="path">DELETE API/task-lists/:idTaskList/:idTask</span> : Delete a task in a specific task list</p>
     </div>
+    <br>
 </body>
 
 </html>

@@ -63,8 +63,9 @@ app.get("/api/test", async(req, res) => {
 
 /**------------------------------------------------------------------------------------------- */
 
+
 app.get("/api/task-lists", authMid, async(req, res) => { //[CHECK, ]
-    console.log("GET /task-lists");
+    console.log("GET API/task-lists");
     //console.log([] != null);
 
     let userId = req.auth.userId;
@@ -79,7 +80,7 @@ app.get("/api/task-lists", authMid, async(req, res) => { //[CHECK, ]
 })
 
 app.get("/api/task-lists/:id", authMid, async(req, res) => { //[CHECK, ]
-    console.log("GET /task-lists/:id");
+    console.log("GET API/task-lists/:id");
 
     let userId = req.auth.userId;
 
@@ -93,7 +94,7 @@ app.get("/api/task-lists/:id", authMid, async(req, res) => { //[CHECK, ]
 })
 
 app.get("/api/task-lists/:idTaskList/:idTask", authMid, async(req, res) => { //[CHECK, ]
-    console.log("GET /task-lists/:idTaskList/:idTask");
+    console.log("GET API/task-lists/:idTaskList/:idTask");
 
     let userId = req.auth.userId;
 
@@ -110,7 +111,7 @@ app.get("/api/task-lists/:idTaskList/:idTask", authMid, async(req, res) => { //[
 })
 
 app.post('/api/task-list', authMid, async(req, res) => { //[CHECK, ]
-    console.log("POST /task-list");
+    console.log("POST API/task-list");
 
     let userId = req.auth.userId;
 
@@ -134,7 +135,7 @@ app.post('/api/task-list', authMid, async(req, res) => { //[CHECK, ]
 })
 
 app.post('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
-    console.log("POST /task-lists/:id");
+    console.log("POST API/task-lists/:id");
 
     let userId = req.auth.userId;
 
@@ -171,7 +172,7 @@ app.post('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
 })
 
 app.put('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
-    console.log("PUT /task-lists/:id");
+    console.log("PUT API/task-lists/:id");
 
     let userId = req.auth.userId;
 
@@ -201,7 +202,7 @@ app.put('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
 })
 
 app.put('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[CHECK, ]
-    console.log("PUT /task-lists/:idTaskList/:idTask");
+    console.log("PUT API/task-lists/:idTaskList/:idTask");
 
     let userId = req.auth.userId;
 
@@ -239,7 +240,7 @@ app.put('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[
 })
 
 app.delete('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
-    console.log("DELETE /task-lists/:id");
+    console.log("DELETE API/task-lists/:id");
 
     let userId = req.auth.userId;
 
@@ -255,7 +256,7 @@ app.delete('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
 })
 
 app.delete('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[CHECK, ]
-    console.log("DELETE /task-lists/:idTaskList/:idTask");
+    console.log("DELETE API/task-lists/:idTaskList/:idTask");
 
     let userId = req.auth.userId;
 
