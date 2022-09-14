@@ -189,11 +189,13 @@ app.put('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
 
     if (taskListToUpdate == null || taskListToUpdate.userId != userId) return res.status(200).send({});
 
+    /////
+
     let updatedTaskList = {
         id: -1,
         userId: userId,
         title: title,
-        tasks: tasks
+        tasks: tasks /////////////////////////////////       IF vide!!!
     }
 
     let taskListToSend = await updateTaskList(updatedTaskList, id);

@@ -136,7 +136,11 @@ module.exports = {
             if (taskLists != null) {
                 const newTaskLists = taskLists.map(obj => {
                     if (obj.id == id) {
-                        finalTaskList = {...updatedTaskList, id: obj.id }
+                        finalTaskList = {
+                            ...updatedTaskList,
+                            id: obj.id,
+                            tasks: obj.tasks //On prend pas en compte cette modiff pour l'instant !
+                        }
                         return finalTaskList;
                     }
                     return obj;
