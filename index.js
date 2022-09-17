@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 var path = require('path');
-const { login, register, getUserProfile } = require('./usersAuth');
+const { login, register, getUserProfile, changePassword } = require('./usersAuth');
 
 var cors = require('cors');
 const jwtUtils = require('./utils/jwt.utils');
@@ -59,6 +59,12 @@ app.get("/api/test", async(req, res) => {
     console.log("TEST /api/test");
 
     getUserProfile(req, res);
+})
+
+app.put("/api/changePassword", authMid, async(req, res) => {
+    console.log("Change password /api/changePassword");
+
+    changePassword(req, res);
 })
 
 /**------------------------------------------------------------------------------------------- */
@@ -147,6 +153,8 @@ app.post('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
     const { startDate } = req.body;
     const { endDate } = req.body;
     const { advancement } = req.body;
+    const { backgroundColor } = req.body;
+    const { fontColor } = req.body;
 
     if (title == null || description == null || priority == null || startDate == null || endDate == null || advancement == null) {
         return res.status(418).send({ message: 'We need all the parameters !' });
@@ -163,7 +171,9 @@ app.post('/api/task-lists/:id', authMid, async(req, res) => { //[CHECK, ]
         priority: priority,
         startDate: startDate,
         endDate: endDate,
-        advancement: advancement
+        advancement: advancement,
+        backgroundColor: backgroundColor,
+        fontColor: fontColor
     }
 
     let taskToSend = await addTaskInTaskList(newTask, id);
@@ -217,6 +227,8 @@ app.put('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[
     const { startDate } = req.body;
     const { endDate } = req.body;
     const { advancement } = req.body;
+    const { backgroundColor } = req.body;
+    const { fontColor } = req.body;
 
     if (title == null || description == null || priority == null || startDate == null || endDate == null || advancement == null) {
         return res.status(418).send({ message: 'We need all the parameters !' });
@@ -233,7 +245,9 @@ app.put('/api/task-lists/:idTaskList/:idTask', authMid, async(req, res) => { //[
         priority: priority,
         startDate: startDate,
         endDate: endDate,
-        advancement: advancement
+        advancement: advancement,
+        backgroundColor: backgroundColor,
+        fontColor: fontColor
     }
 
     let taskToSend = await updateTaskInTaskList(updatedTask, idTaskList, idTask);

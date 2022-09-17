@@ -1,5 +1,5 @@
 var bcrypt = require('bcrypt');
-const { getUsers, addUser } = require('./controllers/usersController');
+const { getUsers, addUser, updateUser } = require('./controllers/usersController');
 var jwtUtils = require('./utils/jwt.utils');
 //var asyncLib  = require('async');
 
@@ -134,5 +134,58 @@ module.exports = {
             });
         }
         return res.status(500).json({ 'error': 'user not found' });
+    },
+
+    changePassword: async(req, res) => {
+        console.log("UPDATE PASSWORD FUNCTION");
+
+        // Params
+        var { username } = req.body;
+        var { password } = req.body;
+        var { newPassword } = req.body;
+
+        console.log(username);
+
+        if (username == null || password == null || newPassword == null) {
+            return res.status(400).json({ 'error': 'missing parameters' });
+        }
+
+        if (!PASSWORD_REGEX.test(newPassword)) {
+            return res.status(400).json({ 'error': 'password invalid (must length 4 - 8 and include 1 number at least)' });
+        }
+
+        if (password == newPassword) return res.status(400).json({ 'error': 'the new password is the same than the last one' });
+
+        let users = await getUsers();
+        const userFound = users.find((user) => user.username == username);
+
+        if (!userFound) {
+            return res.status(400).json({ 'error': 'user doesn\'t exist' });
+        }
+
+        const testPassword = await isPasswordCorrect(password, userFound.password);
+
+        if (!testPassword) {
+            return res.status(403).json({ 'error': 'invalid password' });
+        }
+
+        //changement de mot de passe 
+        const cryptedNewPassword = await cryptPassword(newPassword);
+
+        console.log(`MDP (clair) : ${newPassword} => MDP (Chiffré) : ${cryptedNewPassword}`);
+
+        updatedUser = {
+            ...userFound,
+            password: cryptedNewPassword
+        }
+
+        let userToSend = await updateUser(updatedUser);
+
+        if (userToSend != null) {
+            return res.status(201).send({
+                id: userToSend.id,
+                username: userToSend.username
+            });
+        }
     }
 }

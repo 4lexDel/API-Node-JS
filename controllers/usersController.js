@@ -1,6 +1,7 @@
 const fs = require('fs');
 const USERS_PATH = 'db/users.json';
 
+//Probleme si DB vide !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 module.exports = {
     getUsers: function() {
@@ -44,6 +45,30 @@ module.exports = {
                     console.log("Done writing"); // Success
 
                     resolve(finalUser);
+                });
+            }
+        });
+    },
+
+    updateUser: function(updatedUser) {
+        return new Promise(async(resolve, reject) => {
+            let users = await module.exports.getUsers(); //On recup
+
+            if (users != null) {
+                users = users.map((user) => {
+                    if (user.id == updatedUser.id) return updatedUser;
+                    return user;
+                });
+
+                fs.writeFile(USERS_PATH, JSON.stringify(users), err => {
+                    if (err) {
+                        console.log(err);
+                        resolve({ error: true });
+                    }
+
+                    console.log("Done writing"); // Success
+
+                    resolve(updatedUser);
                 });
             }
         });
